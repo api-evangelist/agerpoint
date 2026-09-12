@@ -1,0 +1,33 @@
+generated: '2026-09-12'
+method: searched
+source: >-
+  https://www.agerpoint.com/ (200), https://www.agerpoint.com/platform (200),
+  https://www.agerpoint.com/pricing (404), https://www.agerpoint.com/contracts (200),
+  https://www.agerpoint.com/contact (200)
+plan_count: 0
+pricing_published: false
+pricing_url: null
+model: contact-sales
+summary: >-
+  Agerpoint publishes no pricing page and no plan tiers. There is no /pricing page (HTTP 404) and no
+  pricing section on the homepage, platform page or contact page. Commercial terms are set by the Master
+  License Agreement and, where professional services apply, Appendix 1 Professional Services Agreement,
+  both of which are published as PDFs at https://www.agerpoint.com/contracts but state no prices. The
+  route to a number is the contact form.
+plans: []
+contracts:
+- name: Master License Agreement
+  version: v12
+  dated: '2023-03-29'
+  url: https://www.agerpoint.com/s/Agerpoint_Master_License_Agreement_v12.pdf
+- name: 'Appendix 1: Professional Services Agreement'
+  dated: '2024-03-01'
+  url: https://www.agerpoint.com/s/Agerpoint_Appendix1_Professional_Services_Agreement_2024_03_01.pdf
+evidence:
+- url: https://www.agerpoint.com/pricing
+  status: 404
+- url: https://www.agerpoint.com/contracts
+  status: 200
+note: >-
+  An honest zero. Recorded rather than omitted so the absence is countable: a buyer evaluating Agerpoint
+  cannot obtain a price, a quota, or an overage rate without a sales conversation.

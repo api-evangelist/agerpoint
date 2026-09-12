@@ -1,0 +1,70 @@
+generated: '2026-09-12'
+method: searched
+source: >-
+  registry.npmjs.org search, pypi.org, api.github.com (org Agerpoint), azuresearch-usnc.nuget.org,
+  itunes.apple.com lookup, play.google.com, and the Agerpoint website
+summary: >-
+  Agerpoint publishes no client libraries or SDKs on any package registry. Searches of npm, PyPI, NuGet
+  and GitHub return zero first-party packages, which is consistent with there being no public API
+  program to wrap. The only first-party software Agerpoint distributes publicly is the Agerpoint Capture
+  mobile app on the two app stores, recorded below as distributions rather than as SDKs.
+sdk_count: 0
+package_count: 2
+registries_searched:
+- registry: npm
+  query: agerpoint
+  results: 0
+  url: https://registry.npmjs.org/-/v1/search?text=agerpoint
+- registry: pypi
+  query: agerpoint, agerpoint-sdk
+  results: 0
+  url: https://pypi.org/pypi/agerpoint/json
+- registry: nuget
+  query: agerpoint
+  results: 0
+  url: https://azuresearch-usnc.nuget.org/query?q=agerpoint
+  note: Searched despite there being no public API because the platform is ASP.NET Core (Kestrel).
+- registry: github
+  query: agerpoint
+  results: 0
+  url: https://api.github.com/search/repositories?q=agerpoint
+  note: >-
+    The github.com/Agerpoint organization exists (created 2016-09-30) and is public, but all three of its
+    repositories are forks of third-party projects — GaussianSplats3D, Sink and eomt — with no first-party
+    code, no releases and no published package.
+- registry: maven-central
+  query: agerpoint
+  results: 0
+  note: Not applicable — no JVM surface is advertised.
+packages:
+- name: Agerpoint Capture (iOS)
+  kind: mobile-application
+  official: true
+  registry: apple-app-store
+  id: com.agerpoint.agerpointcapture
+  url: https://apps.apple.com/us/app/agerpoint-capture/id1629732675
+  version: 1.6.0
+  published: '2026-07-27'
+  publisher: AGERPOINT, INC
+  note: >-
+    Version and date read from https://itunes.apple.com/lookup?id=1629732675. Requires iOS 18.6 or later.
+    This is an end-user capture application, not a developer library — it consumes the Agerpoint Cloud API,
+    it does not expose one.
+- name: Agerpoint Capture (Android)
+  kind: mobile-application
+  official: true
+  registry: google-play
+  id: com.agerpoint.capture
+  url: https://play.google.com/store/apps/details?id=com.agerpoint.capture
+  version: 1.5.2
+  published: '2026-03-17'
+  publisher: Agerpoint
+  note: >-
+    Version and "Updated on" date read from the Play Store listing page; Google Play publishes no
+    unauthenticated metadata endpoint, so this is scraped from the rendered listing rather than an API.
+    The Android build trails the iOS build by one minor version and four months.
+gaps:
+- No first-party SDK exists in any language, so no SDKs pointer is emitted.
+- >-
+  The github.com/Agerpoint organization publishes no first-party source, so there is no code-level
+  reference implementation an integrator could read.

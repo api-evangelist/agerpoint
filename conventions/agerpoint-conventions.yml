@@ -1,0 +1,129 @@
+generated: '2026-09-12'
+method: derived
+source: >-
+  https://cloud.agerpoint.com/assets/index-BtaS8OkR.js (the first-party Agerpoint Cloud console bundle,
+  HTTP 200) and live unauthenticated probes of https://cloudapi.agerpoint.com
+api: Agerpoint Cloud API
+published_by_provider: false
+provenance_warning: >-
+  Agerpoint publishes NO API documentation. Every convention below was observed from the request shapes
+  the company's own public web client constructs, plus the HTTP headers the API returns to
+  unauthenticated callers. Nothing here was supplied by Agerpoint as a contract, and nothing here should
+  be read as a commitment by Agerpoint.
+transport:
+  protocol: HTTPS
+  http_version: HTTP/2
+  server: Kestrel (ASP.NET Core)
+  base_url: https://cloudapi.agerpoint.com
+  media_type: application/json
+  style: REST, resource-per-controller, PascalCase path segments (/api/Captures, /api/Projects, /api/PipelineJobs)
+authentication:
+  style: OAuth 2.0 bearer token (Auth0-issued RS256 JWT)
+  header: Authorization
+  challenge: 'HTTP 401 with WWW-Authenticate: Bearer, zero-length body'
+  audience: https://cloudapi.agerpoint.com
+  see: authentication/agerpoint-authentication.yml
+pagination:
+  style: path-segment offset/limit
+  pattern: /api/{Resource}/skip/{skip}/take/{take}
+  observed_on:
+  - /api/Capture/skip/{skip}/take/{take}
+  - /api/Customers/skip/{skip}/take/{take}
+  - /api/ImageMosaics/skip/{skip}/take/{take}
+  - /api/PipelineJobs/skip/{skip}/take/{take}
+  - /api/Plans/skip/{skip}/take/{take}
+  - /api/Projects/skip/{skip}/take/{take}
+  - /api/Upload/skip/{skip}/take/{take}
+  - /api/Upload/Admin/skip/{skip}/take/{take}
+  cursor_support: false
+  response_envelope: unknown
+  note: >-
+    Offsets are carried in the path rather than the query string, so a page reference is not a
+    bookmarkable query and cannot be varied without rewriting the URL.
+filtering:
+  style: parent-resource sub-collections rather than query filters
+  examples:
+  - /api/CaptureImages/CaptureJobId/{id}
+  - /api/Layers/Projects/{id}
+  - /api/GeometryCollections/PipelineJob/{id}
+  - /api/CustomerAnalytics/Customer/{id}
+sharing:
+  pattern: a "/shared" suffix selects the tenant-shared projection of a collection
+  examples:
+  - /api/Projects/{id}/shared
+  - /api/Layers/Projects/{id}/shared
+  - /api/GeometryCustomAttributes/Geometry/{id}/shared
+  - /api/Capture/Attributes/LayerGroup/{id}/Shared
+async_jobs:
+  present: true
+  pattern: work is submitted as a job and polled for status
+  endpoints:
+  - /api/PipelineJobs/{id}/status
+  - /api/CaptureExtractionJobs/{id}/status
+  - /api/CaptureExtractionJobs/Bulk/Status/{id}
+  callbacks: none published — no webhook, callback URL or event stream is documented or observed
+idempotency:
+  coverage: none
+  mechanism: null
+  header: null
+  scope: []
+  evidence: >-
+    No Idempotency-Key, X-Request-Id, or request-hash header is set by the first-party console on any
+    mutating call, and no replay-protection mechanism is documented. Bulk endpoints
+    (/api/Capture/Customer/{id}/Bulk, /api/Layers/Bulk/LayerGroup/{id}) carry no de-duplication token.
+  note: >-
+    Recorded as none rather than unknown: the provider's own client is the reference integration and it
+    sends no idempotency token.
+reversibility:
+  grade: documented
+  api_is_read_only: false
+  note: >-
+    Two reversal operations are visible in the client surface, but Agerpoint publishes no window,
+    retention period or guarantee for either, so this grades as documented (a reversal path exists) and
+    not verified (no stated window).
+  operations:
+  - resource: Plan
+    reversal: /api/Plans/{id}/Restore
+    reverses: deletion or archival of a Plan
+    window: null
+    window_source: null
+  - resource: Plan
+    reversal: /api/Plans/{id}/clone
+    reverses: 'not a true reversal — a copy-forward escape hatch, recorded for completeness'
+    window: null
+    window_source: null
+  gaps:
+  - No restore, undo or trash surface is visible for Capture, Project, Layer, GeometryCollection,
+    ImageMosaic, GSplatModel or Upload deletions.
+  - No retention window is stated anywhere public, so an agent cannot know whether a delete is recoverable.
+dry_run_mode:
+  supported: false
+  evidence: No preview, validate-only, or dry-run parameter appears on any observed mutating call.
+versioning:
+  scheme: none observed
+  in_path: false
+  in_header: false
+  note: >-
+    Paths are unversioned (/api/{Resource}); no Accept-Version, API-Version or date-pinning header is set
+    by the console. A breaking change would land on every caller at once.
+error_envelope:
+  format: unknown
+  rfc9457: false
+  evidence: Unauthenticated 401/404/405 responses return a zero-length body with no content-type.
+rate_limit_signaling:
+  headers_observed: []
+  evidence: >-
+    No X-RateLimit-*, RateLimit-* or Retry-After header appears on any unauthenticated response from
+    cloudapi.agerpoint.com. See rate-limits/agerpoint-rate-limits.yml.
+tracing:
+  header: x-ms-middleware-request-id
+  note: >-
+    Returned on every response, but the observed value is the all-zero GUID
+    00000000-0000-0000-0000-000000000000 on unauthenticated requests, so it is not a usable correlation
+    id for an anonymous caller.
+cross_links:
+  authentication: authentication/agerpoint-authentication.yml
+  scopes: scopes/agerpoint-scopes.yml
+  conformance: conformance/agerpoint-conformance.yml
+  rate_limits: rate-limits/agerpoint-rate-limits.yml
+  lifecycle: lifecycle/agerpoint-lifecycle.yml

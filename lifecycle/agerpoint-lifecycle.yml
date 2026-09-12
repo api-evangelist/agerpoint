@@ -1,0 +1,66 @@
+generated: '2026-09-12'
+method: searched
+source: >-
+  https://www.agerpoint.com/status (404), https://www.agerpoint.com/blog (200),
+  https://www.agerpoint.com/sitemap.xml (200), https://www.agerpoint.com/contracts (200), and live
+  probes of cloudapi.agerpoint.com and api.agerpoint.com
+api: Agerpoint Cloud API
+summary: >-
+  Agerpoint operates the API but publishes none of the lifecycle surface an integrator depends on. There
+  is no status page, no changelog, no versioning policy, no deprecation policy and no SLA at any public
+  URL. The one hard lifecycle signal available is decay rather than policy: the hostname
+  api.agerpoint.com is a dangling CNAME to a deleted Azure App Service.
+status_page:
+  published: false
+  url: null
+  evidence: 'https://www.agerpoint.com/status returns HTTP 404; no status.agerpoint.com DNS record exists.'
+changelog:
+  published: false
+  url: null
+  evidence: >-
+    No changelog, release-notes or what's-new page appears in https://www.agerpoint.com/sitemap.xml. The
+    blog at https://www.agerpoint.com/blog carries company announcements (funding, patents, partnerships,
+    hires), not product release notes.
+versioning:
+  policy_published: false
+  scheme: none
+  evidence: >-
+    API paths are unversioned (/api/{Resource}) and no version header is sent by the first-party console.
+    See conventions/agerpoint-conventions.yml.
+deprecation:
+  policy_published: false
+  sunset_header: false
+  deprecation_header: false
+  rfc8594: false
+  evidence: No deprecation or sunset policy is published, and no Deprecation/Sunset header is returned.
+sla:
+  published: false
+  evidence: >-
+    Neither the Master License Agreement v12 nor Appendix 1 is surfaced as an SLA, and no uptime
+    commitment is published on the site.
+decay_signals:
+- signal: dangling-dns
+  host: api.agerpoint.com
+  detail: >-
+    api.agerpoint.com is a CNAME to agerapi.azurewebsites.net, which no longer resolves (NXDOMAIN). The
+    Azure App Service it pointed at has been deleted while the DNS record was left in place. The live API
+    now runs at cloudapi.agerpoint.com (CNAME apc-api-production.azurewebsites.net). A dangling CNAME to
+    an unclaimed *.azurewebsites.net name is also a subdomain-takeover exposure.
+  probed: '2026-09-12'
+  evidence: 'dig api.agerpoint.com -> CNAME agerapi.azurewebsites.net; dig agerapi.azurewebsites.net -> no answer'
+- signal: platform-version
+  detail: >-
+    The console bundle self-reports app version 6.7.0 at
+    https://cloud.agerpoint.com/assets/index-BtaS8OkR.js, and the tile service reports TiTiler 1.2.0 at
+    https://tiles.agerpoint.com/healthz. Both are current; the platform is actively maintained. The
+    absence of lifecycle documentation is a publishing gap, not an abandonment signal.
+- signal: mobile-release-cadence
+  detail: >-
+    Agerpoint Capture shipped iOS 1.6.0 on 2026-07-27 and Android 1.5.2 on 2026-03-17 — actively
+    released, with Android four months behind iOS.
+no_pointers_emitted:
+- StatusPage
+- Deprecation
+note: >-
+  Neither a StatusPage nor a Deprecation pointer is written into apis.yml, because Agerpoint serves
+  neither. This file records the verified absence, not a claim of presence.

@@ -1,0 +1,31 @@
+generated: '2026-09-12'
+method: probed
+source: >-
+  Unauthenticated responses from https://cloudapi.agerpoint.com (401/404/405 across /api/Capture,
+  /api/Projects, /api/maps/wms and the spec-discovery paths) plus a search of every public Agerpoint page
+  for a published limit
+limit_count: 0
+published: false
+docs: null
+summary: >-
+  Agerpoint publishes no rate limits, and none are observable. No response from cloudapi.agerpoint.com
+  carries a rate-limit header of any kind, and there is no public documentation in which a limit could be
+  stated. An integrator has no way to know the throughput budget, the exhaustion status code, or the
+  backoff signal before hitting it.
+rate_limits: []
+response_headers:
+  observed: []
+  x_ratelimit_family: false
+  ietf_ratelimit_family: false
+  retry_after: false
+  note: >-
+    Headers present on an unauthenticated response are limited to date, server (Kestrel),
+    www-authenticate, content-length and x-ms-middleware-request-id.
+exhaustion_status_code: unknown
+evidence:
+- url: https://cloudapi.agerpoint.com/api/Capture/00000000-0000-0000-0000-000000000000
+  status: 401
+  note: 'Headers returned: date, server, www-authenticate, content-length, x-ms-middleware-request-id. No rate-limit header.'
+- url: https://www.agerpoint.com/docs
+  status: 404
+  note: No documentation site exists in which a limit could be published.

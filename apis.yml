@@ -1,18 +1,79 @@
 aid: agerpoint
 name: Agerpoint
-description: 'Agerpoint is a company surfaced via the API Evangelist harvest backlog (source: secondary-market)
-  and added to the network as a stub for full-pipeline profiling.'
+description: >-
+  Agerpoint is a spatial-intelligence company in Research Triangle Park, North Carolina that turns
+  real-world field data into AI-derived crop, tree and land measurements. Its Capture mobile app builds
+  full-resolution 3D digital twins of plants from a smartphone or tablet video, and Agerpoint Cloud — a
+  spatial data management and analytics platform — fuses those captures with LiDAR, drone imagery,
+  satellite data, sensors and equipment telemetry to derive plant metrics through a machine-learning
+  pipeline for yield estimation, disease detection, carbon sequestration and biodiversity assessment.
+  The platform is backed by a live REST API at cloudapi.agerpoint.com covering captures, projects,
+  layers, geometry collections, image mosaics, Gaussian-splat models, analytic requests and pipeline
+  jobs, secured by OAuth 2.0 / OIDC bearer tokens from an Auth0 tenant. That API is currently a
+  customer-only surface: it powers the first-party console and mobile apps, and Agerpoint publishes no
+  public developer portal, reference, or machine-readable contract for it. The company also sells
+  API-integration and custom software development as professional services.
+image: https://static1.squarespace.com/static/606493cd17d20236b6ecab96/t/6a43fbdcb741a94a56e4ea61/1782840284360/ap-social-sharing-image.png?format=1500w
 url: https://raw.githubusercontent.com/api-evangelist/agerpoint/refs/heads/main/apis.yml
 x-type: company
 x-source: harvest:secondary-market
-x-tier: stub
-x-tier-reason: harvest
+x-tier: profiled
+x-tier-reason: enrichment-pipeline
 specificationVersion: '0.20'
 created: '2026-09-12'
 modified: '2026-09-12'
 tags:
+- Agriculture
+- Geospatial
+- Remote Sensing
+- Digital Twin
+- LiDAR
+- Point Cloud
+- Carbon Measurement
+- Forestry
+- Machine Learning
+- Spatial Analytics
 - Company
-apis: []
+tags_raw:
+- agriculture
+- geospatial
+- remote-sensing
+- digital-twin
+- lidar
+- point-cloud
+- carbon-measurement
+- forestry
+- machine-learning
+- spatial-analytics
+- company
+apis:
+- name: Agerpoint Cloud API
+  description: >-
+    Live REST/JSON API behind Agerpoint Cloud and the Agerpoint Capture apps, served from
+    cloudapi.agerpoint.com on ASP.NET Core (Kestrel). Resource families observed on the public
+    first-party web client include Captures, Projects, Layers and LayerGroups, GeometryCollections,
+    ImageMosaics, GSplatModels, Uploads, AnalyticRequests, CaptureExtractionJobs, MediaAnalysisPipelines,
+    PipelineJobs, Plans, Collections, Customers, Roles and ResourceUsage. Every operation requires an
+    OAuth 2.0 bearer token issued by the agerpoint.us.auth0.com tenant for the
+    https://cloudapi.agerpoint.com audience; unauthenticated requests answer 401 with
+    "WWW-Authenticate: Bearer". No OpenAPI, Swagger, GraphQL SDL, WSDL or MCP manifest is published at
+    any public location, and there is no public developer portal or API reference.
+  humanURL: https://www.agerpoint.com/platform
+  baseURL: https://cloudapi.agerpoint.com
+  image: https://static1.squarespace.com/static/606493cd17d20236b6ecab96/t/6a43fbdcb741a94a56e4ea61/1782840284360/ap-social-sharing-image.png?format=1500w
+  tags:
+  - Agriculture
+  - Geospatial
+  - Digital Twin
+  - Point Cloud
+  - Spatial Analytics
+  properties:
+  - type: Authentication
+    url: authentication/agerpoint-authentication.yml
+  - type: OAuthScopes
+    url: scopes/agerpoint-scopes.yml
+  - type: Conventions
+    url: conventions/agerpoint-conventions.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
@@ -20,4 +81,65 @@ maintainers:
   email: info@apis.io
 common:
 - type: Website
-  url: https://equityzen.com/company/agerpoint
+  url: https://www.agerpoint.com
+- type: Login
+  url: https://cloud.agerpoint.com
+- type: Support
+  url: https://www.agerpoint.com/contact
+- type: Blog
+  url: https://www.agerpoint.com/blog
+- type: BlogRSS
+  url: https://www.agerpoint.com/blog?format=rss
+- type: GitHubOrganization
+  url: https://github.com/Agerpoint
+- type: PrivacyPolicy
+  url: https://www.agerpoint.com/privacy-statements
+- type: TermsOfService
+  url: https://www.agerpoint.com/contracts
+- type: WellKnown
+  url: well-known/agerpoint-well-known.yml
+- type: Authentication
+  url: authentication/agerpoint-authentication.yml
+- type: OAuthScopes
+  url: scopes/agerpoint-scopes.yml
+- type: Conventions
+  url: conventions/agerpoint-conventions.yml
+- type: Conformance
+  url: conformance/agerpoint-conformance.yml
+- type: DomainSecurity
+  url: security/agerpoint-domain-security.yml
+- type: Packages
+  url: packages/agerpoint-packages.yml
+- type: LLMsTxt
+  url: llms/agerpoint-llms.txt
+- type: Plans
+  url: plans/agerpoint-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/agerpoint-rate-limits.yml
+- type: Lifecycle
+  url: lifecycle/agerpoint-lifecycle.yml
+x-enrichment:
+  date: '2026-09-12'
+  status: minimal
+  artifacts_added: 14
+  pass: local-v3
+x-coverage:
+  state: gated
+  reason: customer-only-docs
+  detail: >-
+    Agerpoint's only API is the console backend at cloudapi.agerpoint.com, where every path — including
+    the OGC WMS endpoint at /api/maps/wms — answers HTTP 401 "WWW-Authenticate: Bearer" and requires an
+    Auth0 token issued to a paying tenant, while www.agerpoint.com serves no /developers, /docs or /api
+    page at all (404) and the tile service returns "RBAC: access denied".
+  evidence:
+  - url: https://cloudapi.agerpoint.com/api/Capture/00000000-0000-0000-0000-000000000000
+    status: 401
+  - url: https://cloudapi.agerpoint.com/api/maps/wms?service=WMS&request=GetCapabilities
+    status: 401
+  - url: https://www.agerpoint.com/developers
+    status: 404
+  - url: https://cloudapi.agerpoint.com/swagger/v1/swagger.json
+    status: 404
+  - url: https://tiles.agerpoint.com/conformance
+    status: 403
+  checked: '2026-09-12'

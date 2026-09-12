@@ -1,0 +1,116 @@
+generated: '2026-09-12'
+method: probed
+source: >-
+  https://agerpoint.us.auth0.com/.well-known/openid-configuration (200);
+  https://cloudapi.agerpoint.com/api/Capture/{id} (401, WWW-Authenticate: Bearer);
+  https://cloudapi.agerpoint.com/api/maps/wms?service=WMS&request=GetCapabilities (401);
+  https://tiles.agerpoint.com/healthz (200); https://tiles.agerpoint.com/conformance (403);
+  https://cloud.agerpoint.com/assets/index-BtaS8OkR.js (200, first-party console bundle)
+summary: >-
+  Agerpoint makes no published conformance or compliance claims. Everything asserted below was
+  established by probe. Two OGC surfaces demonstrably exist — an OGC Web Map Service at
+  cloudapi.agerpoint.com/api/maps/wms and a TiTiler 1.2.0 raster-tile service at tiles.agerpoint.com
+  serving the OGC WebMercatorQuad tile matrix set over Cloud Optimized GeoTIFF — but both are
+  authorization-gated, so neither GetCapabilities nor /conformance could be retrieved. Per the
+  no-fabrication rule, no OGC contract is recorded here or saved to conformance/ as a document; only the
+  probe result is recorded.
+conformance:
+- id: oauth2
+  conforms: true
+  evidence: >-
+    https://agerpoint.us.auth0.com/.well-known/oauth-authorization-server returns RFC 8414 authorization
+    server metadata (HTTP 200); the API answers 401 with WWW-Authenticate: Bearer.
+- id: oidc
+  conforms: true
+  evidence: >-
+    https://agerpoint.us.auth0.com/.well-known/openid-configuration returns a complete OpenID Connect
+    Discovery 1.0 document (HTTP 200) including jwks_uri, userinfo_endpoint and end_session_endpoint.
+- id: rfc8414
+  conforms: true
+  evidence: The RFC 8414 alias is served and is byte-identical to the OIDC discovery document.
+- id: rfc7636-pkce
+  conforms: true
+  evidence: 'code_challenge_methods_supported: [S256, plain] in the discovery document.'
+- id: rfc9449-dpop
+  conforms: true
+  evidence: 'dpop_signing_alg_values_supported: [ES256] in the discovery document.'
+- id: rfc7591-dynamic-client-registration
+  conforms: true
+  evidence: 'registration_endpoint: https://agerpoint.us.auth0.com/oidc/register'
+- id: rfc9728-oauth-protected-resource
+  conforms: false
+  evidence: https://cloudapi.agerpoint.com/.well-known/oauth-protected-resource returns HTTP 404.
+- id: rfc9116-security-txt
+  conforms: false
+  evidence: /.well-known/security.txt returns 404 on agerpoint.com, www.agerpoint.com and cloudapi.agerpoint.com.
+- id: rfc9457-problem-details
+  conforms: unknown
+  evidence: >-
+    Error envelopes cannot be inspected without credentials; unauthenticated 401 and 405 responses carry
+    a zero-length body and no content-type.
+- id: rfc9727-api-catalog
+  conforms: false
+  evidence: /.well-known/api-catalog returns HTTP 404 on every Agerpoint host probed.
+- id: openapi
+  conforms: false
+  evidence: >-
+    No OpenAPI or Swagger document at /openapi.json, /openapi.yaml, /swagger.json, /swagger/v1/swagger.json,
+    /swagger/index.html, /v1/openapi.json, /api-docs, /docs or /redoc on cloudapi.agerpoint.com (404/405),
+    nor on www.agerpoint.com (404).
+- id: graphql
+  conforms: false
+  evidence: /graphql and /api/graphql on cloudapi.agerpoint.com return 405 and 404; no GraphQL surface exists.
+- id: soap-wsdl
+  conforms: false
+  evidence: '?wsdl and ?singleWsdl on cloudapi.agerpoint.com return HTTP 404.'
+- id: mcp
+  conforms: false
+  evidence: >-
+    POST {"jsonrpc":"2.0","id":1,"method":"tools/list"} to https://cloudapi.agerpoint.com/mcp returns
+    HTTP 405; /api/mcp returns 404. No hosted or stdio MCP server is published.
+- id: a2a-agent-card
+  conforms: false
+  evidence: >-
+    /.well-known/agent-card.json and /.well-known/agent.json return 404 on agerpoint.com,
+    www.agerpoint.com, cloudapi.agerpoint.com and agerpoint.us.auth0.com. cloud.agerpoint.com answers 200
+    on both paths with the same React SPA shell, which is a catch-all and not an agent card.
+domain_standards:
+- id: ogc-wms
+  conforms: gated
+  evidence: >-
+    The first-party console builds requests against ${cloudapi}/api/maps/wms and
+    ${cloudapi}/api/maps/wms/shared. GET
+    https://cloudapi.agerpoint.com/api/maps/wms?service=WMS&request=GetCapabilities returns HTTP 401
+    (WWW-Authenticate: Bearer) rather than 404, so a WMS endpoint exists but its capabilities document
+    is not publicly retrievable.
+  note: No GetCapabilities XML was fetched, so none is recorded. Never generate an OGC contract.
+- id: ogc-api-tiles
+  conforms: gated
+  evidence: >-
+    https://tiles.agerpoint.com/healthz returns HTTP 200 with
+    {"versions":{"titiler":"1.2.0","rasterio":"1.5.0","gdal":"3.12.1","proj":"9.7.1","geos":"3.14.1"}},
+    identifying TiTiler 1.2.0, which implements OGC API - Tiles. The console requests
+    https://tiles.agerpoint.com/cog/tiles/WebMercatorQuad/{z}/{x}/{y}@2x.png, naming the OGC
+    WebMercatorQuad tile matrix set. GET https://tiles.agerpoint.com/conformance and /tileMatrixSets both
+    return HTTP 403 "RBAC: access denied", so conformsTo[] could not be read.
+- id: cloud-optimized-geotiff
+  conforms: true
+  evidence: >-
+    The console's raster path is TiTiler's /cog/ prefix with a ?url= COG reference, and the tile service
+    reports rasterio 1.5.0 / GDAL 3.12.1 — COG is the raster interchange format in use.
+- id: geojson
+  conforms: true
+  evidence: >-
+    The console uploads and renders .geojson (RFC 7946) FeatureCollections and maps them onto
+    /api/GeometryCollections and /api/Geometries resources; .kml, .kmz, .csv/.tsv and .laz/.ply are also
+    accepted upload formats.
+- id: epsg-crs
+  conforms: true
+  evidence: >-
+    Coordinates are handled in EPSG:4326 and rendered in EPSG:3857; PROJ 9.7.1 is reported by the tile
+    service.
+compliance_certifications: []
+compliance_note: >-
+  No SOC 2, ISO 27001, PCI DSS, HIPAA, FedRAMP, GDPR DPA or trust-center claim is published on
+  agerpoint.com. The privacy statement at https://www.agerpoint.com/privacy-statements describes generic
+  vulnerability scanning and TLS but names no certification. No Compliance pointer is emitted.

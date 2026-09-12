@@ -64,5 +64,45 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Agerpoint is a company surfaced via the API Evangelist harvest backlog (source: secondary-market) and added to the network as a stub for full-pipeline profiling.
-- https://equityzen.com/company/agerpoint
+Agerpoint is a spatial-intelligence company in Research Triangle Park, North Carolina that turns
+real-world field data into AI-derived crop, tree and land measurements. Its Capture mobile app builds
+full-resolution 3D digital twins of plants from a smartphone or tablet video, and Agerpoint Cloud — a
+spatial data management and analytics platform — fuses those captures with LiDAR, drone imagery,
+satellite data, sensors and equipment telemetry to derive plant metrics for yield estimation, disease
+detection, carbon sequestration and biodiversity assessment.
+
+## API status
+
+Agerpoint runs a live REST API at `https://cloudapi.agerpoint.com`, secured by OAuth 2.0 bearer tokens
+from the `agerpoint.us.auth0.com` tenant. It is a **customer-only surface**: it powers the first-party
+console at `cloud.agerpoint.com` and the Capture mobile apps, and Agerpoint publishes no developer
+portal, no API reference, and no machine-readable contract of any kind for it. Unauthenticated requests
+answer `401` with `WWW-Authenticate: Bearer`.
+
+Probed 2026-09-12 and **not** found at any public URL: OpenAPI/Swagger, GraphQL SDL, WSDL, AsyncAPI,
+Postman collection, MCP server, A2A agent card, `llms.txt`, `security.txt`, `/.well-known/api-catalog`,
+pricing page, status page, changelog, deprecation policy, or an SDK on any package registry.
+
+Two OGC surfaces exist but are gated: an OGC Web Map Service at `/api/maps/wms` (HTTP 401) and a
+TiTiler 1.2.0 raster-tile service at `tiles.agerpoint.com` serving the WebMercatorQuad tile matrix set
+over Cloud Optimized GeoTIFF (HTTP 403). No OGC capabilities document was retrievable, so none is
+recorded here.
+
+One decay signal worth reporting to Agerpoint: `api.agerpoint.com` is a **dangling CNAME** to
+`agerapi.azurewebsites.net`, an Azure App Service that no longer resolves. That is both a stale record
+and a subdomain-takeover exposure.
+
+## What is in this repository
+
+| Path | What it holds |
+|---|---|
+| `apis.yml` | The APIs.json profile — identity, the one API entry, and every artifact pointer |
+| `well-known/` | Probe index for every host, plus the three real documents the Auth0 tenant serves |
+| `authentication/` | The OAuth 2.0 / OIDC profile, read from the authorization server's own discovery document |
+| `scopes/` | The only scope list Agerpoint publishes (OIDC identity scopes); API scopes are not published |
+| `conventions/` | REST conventions observed from the first-party console — pagination, jobs, idempotency, reversibility |
+| `conformance/` | Standards conformance established by probe, including the two gated OGC surfaces |
+| `security/` | TLS/HSTS/DNSSEC/CAA/SPF/DMARC probe results |
+| `packages/` | Registry search results (zero SDKs) and the two Capture mobile-app distributions |
+| `plans/`, `rate-limits/`, `lifecycle/` | Recorded absences — pricing, limits and lifecycle policy are unpublished |
+| `llms/` | A generated `llms.txt` describing what an agent can and cannot reach |

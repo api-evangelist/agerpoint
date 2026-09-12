@@ -1,0 +1,107 @@
+generated: '2026-09-12'
+method: probed
+source: >-
+  https://agerpoint.us.auth0.com/.well-known/openid-configuration (HTTP 200, saved verbatim to
+  well-known/agerpoint-openid-configuration.json) plus an unauthenticated probe of
+  https://cloudapi.agerpoint.com/api/Capture/{id} which answered HTTP 401 with "WWW-Authenticate: Bearer",
+  and the Auth0 client configuration published in the first-party console bundle
+  https://cloud.agerpoint.com/assets/index-BtaS8OkR.js
+api: Agerpoint Cloud API
+summary: >-
+  Every Agerpoint Cloud API operation is protected by an OAuth 2.0 / OpenID Connect bearer token issued by
+  the Auth0 tenant agerpoint.us.auth0.com for the audience https://cloudapi.agerpoint.com. Agerpoint
+  publishes no developer-facing authentication guide, no API-key mechanism, and no public client
+  registration; credentials are provisioned to tenants, so this profile is read from the authorization
+  server's own discovery document rather than from documentation.
+published_documentation: false
+documentation_note: >-
+  No public auth reference exists. www.agerpoint.com/developers, /docs and /api all return HTTP 404;
+  cloud.agerpoint.com is a login-gated single-page console.
+schemes:
+- name: oauth2_auth0
+  type: oauth2
+  in: header
+  header: Authorization
+  format: Bearer <JWT>
+  description: >-
+    OAuth 2.0 bearer access token (RS256 JWT) minted by the Agerpoint Auth0 tenant. The API is registered
+    in Auth0 as the resource identified by the audience https://cloudapi.agerpoint.com.
+  evidence: 'HTTP 401 + WWW-Authenticate: Bearer on GET https://cloudapi.agerpoint.com/api/Capture/{id}'
+- name: openIdConnect
+  type: openIdConnect
+  openIdConnectUrl: https://agerpoint.us.auth0.com/.well-known/openid-configuration
+  description: >-
+    Full OIDC discovery is served anonymously by the tenant, including JWKS, userinfo, device
+    authorization, back-channel authentication and global token revocation endpoints.
+authorization_server:
+  issuer: https://agerpoint.us.auth0.com/
+  vendor: Auth0 (Okta)
+  region: us
+  discovery: https://agerpoint.us.auth0.com/.well-known/openid-configuration
+  rfc8414_alias: https://agerpoint.us.auth0.com/.well-known/oauth-authorization-server
+  rfc8414_identical_to_oidc: true
+  endpoints:
+    authorization: https://agerpoint.us.auth0.com/authorize
+    token: https://agerpoint.us.auth0.com/oauth/token
+    userinfo: https://agerpoint.us.auth0.com/userinfo
+    jwks: https://agerpoint.us.auth0.com/.well-known/jwks.json
+    revocation: https://agerpoint.us.auth0.com/oauth/revoke
+    registration: https://agerpoint.us.auth0.com/oidc/register
+    device_authorization: https://agerpoint.us.auth0.com/oauth/device/code
+    backchannel_authentication: https://agerpoint.us.auth0.com/bc-authorize
+    end_session: https://agerpoint.us.auth0.com/oidc/logout
+    mfa_challenge: https://agerpoint.us.auth0.com/mfa/challenge
+    global_token_revocation: https://agerpoint.us.auth0.com/oauth/global-token-revocation/connection/{connectionName}
+  grant_types_supported:
+  - client_credentials
+  - authorization_code
+  - refresh_token
+  - password
+  - implicit
+  - urn:ietf:params:oauth:grant-type:device_code
+  - urn:ietf:params:oauth:grant-type:token-exchange
+  - urn:ietf:params:oauth:grant-type:jwt-bearer
+  - http://auth0.com/oauth/grant-type/password-realm
+  - http://auth0.com/oauth/grant-type/passwordless/otp
+  - http://auth0.com/oauth/grant-type/mfa-oob
+  - http://auth0.com/oauth/grant-type/mfa-otp
+  - http://auth0.com/oauth/grant-type/mfa-recovery-code
+  response_types_supported:
+  - code
+  - token
+  - id_token
+  - code token
+  - code id_token
+  - token id_token
+  - code token id_token
+  token_endpoint_auth_methods_supported:
+  - client_secret_basic
+  - client_secret_post
+  - private_key_jwt
+  - none
+  pkce:
+    supported: true
+    code_challenge_methods:
+    - S256
+    - plain
+  dpop:
+    supported: true
+    signing_algs:
+    - ES256
+  id_token_signing_alg_values_supported:
+  - HS256
+  - RS256
+  - PS256
+  mfa: true
+  dynamic_client_registration: true
+clients_observed:
+- name: Agerpoint Cloud console
+  type: public SPA (authorization code + PKCE)
+  callback: https://cloud.agerpoint.com
+  audience: https://cloudapi.agerpoint.com
+  source: https://cloud.agerpoint.com/assets/index-BtaS8OkR.js
+gaps:
+- No public documentation of how a customer or partner obtains client credentials.
+- No API-key alternative is offered or documented.
+- No published scope reference for the https://cloudapi.agerpoint.com resource (see scopes/).
+- No /.well-known/oauth-protected-resource (RFC 9728) on cloudapi.agerpoint.com (HTTP 404).

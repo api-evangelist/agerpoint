@@ -1,0 +1,62 @@
+generated: '2026-09-12'
+method: probed
+source: https://agerpoint.us.auth0.com/.well-known/openid-configuration
+api: Agerpoint Cloud API
+docs: null
+summary: >-
+  The only scope list Agerpoint publishes anywhere is the OIDC scope set advertised by its Auth0
+  authorization server. These are identity scopes, not Agerpoint Cloud API permissions. Auth0 resource
+  servers carry their own per-API scopes, but Agerpoint does not publish the scope reference for the
+  https://cloudapi.agerpoint.com audience and there is no OpenAPI or RFC 9728 protected-resource document
+  from which to derive it, so the API's authorization model is not publicly knowable.
+resource_server_scopes_published: false
+resource_server_audience: https://cloudapi.agerpoint.com
+scopes:
+- name: openid
+  description: Issue an OpenID Connect ID token for the authenticated subject.
+  kind: oidc
+- name: profile
+  description: Basic profile claims (name, nickname, picture, created_at).
+  kind: oidc
+- name: email
+  description: Email address claim.
+  kind: oidc
+- name: email_verified
+  description: Email verification status claim.
+  kind: oidc
+- name: offline_access
+  description: Issue a refresh token for long-lived access.
+  kind: oidc
+- name: name
+  description: Full name claim.
+  kind: oidc
+- name: given_name
+  description: Given name claim.
+  kind: oidc
+- name: family_name
+  description: Family name claim.
+  kind: oidc
+- name: nickname
+  description: Nickname claim.
+  kind: oidc
+- name: picture
+  description: Profile picture URL claim.
+  kind: oidc
+- name: created_at
+  description: Account creation timestamp claim.
+  kind: oidc
+- name: identities
+  description: Linked identity-provider identities claim.
+  kind: oidc
+- name: phone
+  description: Phone number claim.
+  kind: oidc
+- name: address
+  description: Address claim.
+  kind: oidc
+scope_count: 14
+gaps:
+- >-
+  Agerpoint Cloud API scopes (the permissions that actually gate /api/Captures, /api/Projects,
+  /api/PipelineJobs and the rest) are not published. Recovering them would require an authenticated
+  token introspection against the tenant, which this pipeline does not perform.

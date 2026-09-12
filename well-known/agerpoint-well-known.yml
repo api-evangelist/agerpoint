@@ -1,0 +1,157 @@
+generated: '2026-09-12'
+method: probed
+source: live HTTPS probes of the named /.well-known/ paths on every host in apis.yml (registrable domain, www, API baseURL
+  host, console host, tile host) plus the Auth0 authorization server the console bootstraps against
+note: Only agerpoint.us.auth0.com serves real well-known documents. It is the OAuth 2.0 / OIDC authorization server Agerpoint
+  provisioned for the Agerpoint Cloud API (audience https://cloudapi.agerpoint.com), configured in the first-party console
+  at https://cloud.agerpoint.com/assets/index-BtaS8OkR.js. cloud.agerpoint.com answers 200 with the same 2,189-byte React
+  SPA shell for EVERY /.well-known/ path, which is a catch-all, not a document. api.agerpoint.com is a dangling CNAME to agerapi.azurewebsites.net,
+  which no longer resolves.
+hosts:
+- host: agerpoint.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+  - path: /.well-known/jwks.json
+    status: 404
+- host: www.agerpoint.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+  - path: /.well-known/jwks.json
+    status: 404
+- host: api.agerpoint.com
+  note: DNS does not resolve (gaierror); no probe possible
+  documents: []
+- host: cloudapi.agerpoint.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+  - path: /.well-known/jwks.json
+    status: 404
+- host: cloud.agerpoint.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    content_type: text/html
+    note: 200 returns an HTML/SPA shell, not a document — treated as a miss
+  - path: /.well-known/openid-configuration
+    status: 200
+    content_type: text/html
+    note: 200 returns an HTML/SPA shell, not a document — treated as a miss
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    content_type: text/html
+    note: 200 returns an HTML/SPA shell, not a document — treated as a miss
+  - path: /.well-known/oauth-protected-resource
+    status: 200
+    content_type: text/html
+    note: 200 returns an HTML/SPA shell, not a document — treated as a miss
+  - path: /.well-known/api-catalog
+    status: 200
+    content_type: text/html
+    note: 200 returns an HTML/SPA shell, not a document — treated as a miss
+  - path: /.well-known/ai-plugin.json
+    status: 200
+    content_type: text/html
+    note: 200 returns an HTML/SPA shell, not a document — treated as a miss
+  - path: /.well-known/agent-card.json
+    status: 200
+    content_type: text/html
+    note: 200 returns an HTML/SPA shell, not a document — treated as a miss
+  - path: /.well-known/agent.json
+    status: 200
+    content_type: text/html
+    note: 200 returns an HTML/SPA shell, not a document — treated as a miss
+  - path: /.well-known/jwks.json
+    status: 200
+    content_type: text/html
+    note: 200 returns an HTML/SPA shell, not a document — treated as a miss
+- host: tiles.agerpoint.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 403
+  - path: /.well-known/openid-configuration
+    status: 403
+  - path: /.well-known/oauth-authorization-server
+    status: 403
+  - path: /.well-known/oauth-protected-resource
+    status: 403
+  - path: /.well-known/api-catalog
+    status: 403
+  - path: /.well-known/ai-plugin.json
+    status: 403
+  - path: /.well-known/agent-card.json
+    status: 403
+  - path: /.well-known/agent.json
+    status: 403
+  - path: /.well-known/jwks.json
+    status: 403
+- host: agerpoint.us.auth0.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 200
+    content_type: application/json
+    file: agerpoint-openid-configuration.json
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    content_type: application/json
+    file: agerpoint-oauth-authorization-server.json
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+  - path: /.well-known/jwks.json
+    status: 200
+    content_type: application/json
+    file: agerpoint-jwks.json
