@@ -14,8 +14,15 @@
       "title": "",
       "saved": 0,
       "method": "none"
+    },
+    {
+      "source": "https://www.agerpoint.com/blog/atom.xml",
+      "feed_url": "https://www.agerpoint.com/blog/atom.xml",
+      "title": "",
+      "saved": 0,
+      "method": "feed"
     }
   ],
-  "post_count": 0,
-  "fetched": "2026-09-13T13:00:00Z"
+  "post_count": 20,
+  "fetched": "2026-09-19T20:17:39Z"
 }
