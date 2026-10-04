@@ -31,7 +31,7 @@ tags:
 - Point Cloud
 - Carbon Measurement
 - Forestry
-- Machine-Learning
+- Machine Learning
 - Spatial Analytics
 - Company
 tags_raw:
@@ -46,6 +46,7 @@ tags_raw:
 - machine-learning
 - spatial-analytics
 - company
+- Machine-Learning
 apis:
 - name: Agerpoint Cloud API
   description: >-
