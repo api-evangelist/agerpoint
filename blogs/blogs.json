@@ -9,11 +9,11 @@
       "method": "discovered"
     },
     {
-      "source": "https://www.agerpoint.com/contact",
-      "feed_url": "https://www.agerpoint.com/contact",
+      "source": "https://www.agerpoint.com/blog?format=rss",
+      "feed_url": "https://www.agerpoint.com/blog?format=rss",
       "title": "",
       "saved": 0,
-      "method": "none"
+      "method": "feed"
     },
     {
       "source": "https://www.agerpoint.com/blog/atom.xml",
@@ -21,8 +21,15 @@
       "title": "",
       "saved": 0,
       "method": "feed"
+    },
+    {
+      "source": "https://www.agerpoint.com/contact",
+      "feed_url": "https://www.agerpoint.com/contact",
+      "title": "",
+      "saved": 0,
+      "method": "none"
     }
   ],
   "post_count": 20,
-  "fetched": "2026-10-03T12:30:02Z"
+  "fetched": "2026-10-10T13:15:00Z"
 }
